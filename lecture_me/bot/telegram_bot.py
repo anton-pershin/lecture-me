@@ -337,16 +337,6 @@ class TelegramBot:
         
         # Start the bot
         logger.info("Starting telegram bot...")
-        await application.initialize()
-        await application.start()
-        await application.updater.start_polling()
         
-        # Keep the bot running
-        try:
-            await application.updater.idle()
-        except KeyboardInterrupt:
-            logger.info("Received interrupt signal, shutting down...")
-        finally:
-            await application.updater.stop()
-            await application.stop()
-            await application.shutdown()
+        # Run the bot with polling
+        await application.run_polling(drop_pending_updates=True)
