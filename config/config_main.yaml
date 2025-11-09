@@ -8,3 +8,8 @@ result_dir: ${user_settings.result_dir}
 hydra_root: ${user_settings.hydra_root}
 hydra_dir: ${user_settings.hydra_dir}
 
+# Bot configuration
+telegram_bot_token: ${user_settings.telegram_bot_token}
+notes_directory: ${user_settings.notes_directory}
+llm_model: ${user_settings.llm_model}
+llm_api_key: ${user_settings.llm_api_key}
