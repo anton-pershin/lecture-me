@@ -85,7 +85,7 @@ class TelegramBot:
                 f"📊 Your Study Statistics:\n"
                 f"Questions answered: {session.questions_answered}\n"
                 f"Total score: {session.score}\n"
-                f"Average score: {average_score:.1f}%"
+                f"Average score: {average_score:.1f}/3"
             )
     
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -113,3 +113,53 @@ class TelegramBot:
         """Handle subject selection."""
         user_id = update.effective_user.id
         session = self.get_user_session(user_id)
+        
+        # Verify subject exists
+        subjects = self.notes_service.get_subjects()
+        subject_names = [s.name for s in subjects]
+        
+        if subject_name not in subject_names:
+            await update.message.reply_text(
+                f"Subject '{subject_name}' not found. Please choose from: {', '.join(subject_names)}"
+            )
+            return
+        
+        session.selected_subject = subject_name
+        
+        # Get topics for this subject
+        topics = self.notes_service.get_topics_for_subject(subject_name)
+        
+        if not topics:
+            await update.message.reply_text(
+                f"No topics found for subject '{subject_name}'. Please check your notes directory."
+            )
+            return
+        
+        # Create keyboard with topic options
+        keyboard = [[topic.name] for topic in topics]
+        keyboard.append(["🎲 Random Topic"])  # Add random option
+        reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
+        
+        await update.message.reply_text(
+            f"Great! You selected '{subject_name}'. Now choose a topic:",
+            reply_markup=reply_markup
+        )
+    
+    async def handle_topic_selection(self, update: Update, context: ContextTypes.DEFAULT_TYPE, topic_name: str) -> None:
+        """Handle topic selection and generate a question."""
+        user_id = update.effective_user.id
+        session = self.get_user_session(user_id)
+        
+        # Handle random topic selection
+        if topic_name == "🎲 Random Topic":
+            topics = self.notes_service.get_topics_for_subject(session.selected_subject)
+            if topics:
+                import random
+                topic_name = random.choice(topics).name
+        
+        # Verify topic exists
+        topics = self.notes_service.get_topics_for_subject(session.selected_subject)
+        topic_names = [t.name for t in topics]
+        
+        if topic_name not in topic_names:
+            await update
