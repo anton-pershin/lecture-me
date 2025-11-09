@@ -311,8 +311,8 @@ class TelegramBot:
             # Handle as regular message
             await self.handle_message(update, context)
     
-    async def run(self) -> None:
-        """Run the telegram bot."""
+    def run_sync(self) -> None:
+        """Run the telegram bot synchronously."""
         # Create application
         application = Application.builder().token(self.token).build()
         
@@ -338,5 +338,5 @@ class TelegramBot:
         # Start the bot
         logger.info("Starting telegram bot...")
         
-        # Run the bot with polling
-        await application.run_polling(drop_pending_updates=True)
+        # Run the bot with polling (this manages its own event loop)
+        application.run_polling(drop_pending_updates=True)
