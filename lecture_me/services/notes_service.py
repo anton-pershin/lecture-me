@@ -51,9 +51,14 @@ class NotesService:
         markdown_files = []
 
         for file_path in topic_dir.iterdir():
-            if file_path.is_file() and file_path.suffix.lower() in [".md", ".markdown"]:
+            if (
+                file_path.is_file()
+                and file_path.suffix.lower() in [".md", ".markdown"]
+                and file_path.name != "state.md"
+            ):
                 markdown_files.append(file_path)
 
+        breakpoint()
         return markdown_files
 
     def get_topics_for_subject(self, subject_name: str) -> List[Topic]:
