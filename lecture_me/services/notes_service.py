@@ -58,7 +58,6 @@ class NotesService:
             ):
                 markdown_files.append(file_path)
 
-        breakpoint()
         return markdown_files
 
     def get_topics_for_subject(self, subject_name: str) -> List[Topic]:
