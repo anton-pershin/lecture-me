@@ -1,5 +1,5 @@
-# template-hydra-project
-A template for any hydra project
+# Lecture me
+An LLM-backed Telegram bot for self-education over your own notes
 
 ## Getting started
 
@@ -12,10 +12,10 @@ conda activate myenv
 ```bash
 pip install -r requirements.txt
 ```
-3. Set up `/config/user_settings/user_settings.yaml`
-4. Run one of the scripts `/project_name/scripts/XXX.py` and do not forget to modify the corresponding config file in `/config/config_XXX.yaml'
+3. Set up tokens in `/config/user_settings/user_settings.yaml` and an LLM in `/config/llm`
+4. Run `/lecture_me/scripts/main.py` and do not forget to modify the corresponding config file in `/config/config_main.yaml'
 ```bash
-python project_name/scripts/XXX.py
+python lecture_me/scripts/main.py
 ```
 
 ⚠️  DO NOT commit your `user_settings.yaml`
@@ -24,18 +24,17 @@ python project_name/scripts/XXX.py
 
 ### `main.py`
 
-Does XXX
+Runs a Telegram bot server handling user requests
 
 #### Configuration
 
-1. In `user_settings.yaml`, set up your XXX:
+1. In `user_settings.yaml`, set up your bot token and notes directory:
    ```yaml
-    ...
+    telegram_bot_token: YOUR_TOKEN
+    notes_directory: /path/to/notes
    ```
 
-2. In `config_main.yaml`, modify:
-   - ...
-
-#### Output
-
-Creates XXX
+2. In `config_main.yaml`, choose your LLM:
+    ```yaml
+    llm: ...
+    ```
